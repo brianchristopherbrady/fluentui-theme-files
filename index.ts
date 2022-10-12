@@ -1,29 +1,100 @@
-import { webDarkTheme as fluentWebDarkTheme, webLightTheme as fluentWebLightTheme, createDarkTheme, createLightTheme } from "@fluentui/react-components";
+import { tokens as aliases, createDarkTheme, createLightTheme } from "@fluentui/react-components";
+import { tridentBrandColorRamp } from "./tridentBrandColorRamp";
+import { writeFileSync, mkdir } from 'fs';
+import {resolve} from 'path';
 
-const tridentBrandColorRamp = {
-    "10":"#000000",
-    "20":"#011800",
-    "30":"#002700",
-    "40":"#00360c",
-    "50":"#004612",
-    "60":"#005618",
-    "70":"#00671f",
-    "80":"#007826",
-    "90":"#218935",
-    "100":"#3e9949",
-    "110":"#59a85e",
-    "120":"#73b776",
-    "130":"#8ec68f",
-    "140":"#aad5a9",
-    "150":"#c6e4c5",
-    "160":"#e2f2e2"
-};
 
-const tridentDarkTheme = createDarkTheme(tridentBrandColorRamp);
-const tridentLightTheme = createLightTheme(tridentBrandColorRamp);
+const darkTheme = createDarkTheme(tridentBrandColorRamp);
+const lightTheme = createLightTheme(tridentBrandColorRamp);
 
-export const webDarkTheme = tridentDarkTheme;
-export const webLightTheme = tridentLightTheme;
+const objToCss = (obj: any) => {
+    var keys = Object.keys(obj)
+    var values = Object.values(obj);
+    if (!keys.length) return ''
+    var i, len = keys.length
+    var result = ''
+  
+    for (i = 0; i < len; i++) {
+      var key = keys[i]
+      var val = obj[key]
+      result += `\t--${key}: ${val};\n`;
+    }
+  
+    return result
+  }
 
-module.exports = webDarkTheme;
-module.exports = webLightTheme;
+  const formatObj = (obj: any) => {
+    var keys = Object.keys(obj)
+    var values = Object.values(obj);
+    if (!keys.length) return ''
+    var i, len = keys.length
+    var result = ''
+  
+    for (i = 0; i < len; i++) {
+      var key = keys[i]
+      var val = obj[key]
+      result += `\n\t${key}: "${val}",`;
+    }
+  
+    return result
+  }
+
+  const darkThemeCss =  objToCss(darkTheme);
+  const lightThemeCss =  objToCss(lightTheme);
+  const aliasesCss =  objToCss(aliases);
+
+  const darkThemeTs = formatObj(darkTheme);
+  const lightThemeTs = formatObj(lightTheme);
+  const aliasesTs = formatObj(aliases);
+
+
+  const writeFile = (outputPath: string, fileContent: string, fileType: string, theme: string) => {
+    if(fileType == 'css') {
+      writeFileSync(outputPath, `:root { \n ${fileContent} }`, 'utf8');
+    } 
+    else if (fileType === 'scss') {
+      if ( theme === 'aliases' ) {
+        writeFileSync(outputPath, `@mixin install-fluent-${theme} { \n ${fileContent} }`, 'utf8');
+      } else {
+        writeFileSync(outputPath, `@mixin install-fluent-${theme}-theme { \n ${fileContent} }`, 'utf8');
+      }
+    }
+    else if (fileType === 'ts') {
+      if ( theme === 'aliases' ) {
+        writeFileSync(outputPath, `const fluent${theme.charAt(0).toUpperCase() + theme.slice(1)} = { ${fileContent} }`, 'utf8');
+      }
+      else {
+        writeFileSync(outputPath, `const fluent${theme.charAt(0).toUpperCase() + theme.slice(1)}Theme = { ${fileContent} }`, 'utf8');
+      }
+    }
+  }
+
+  mkdir('./dist', { recursive: true }, (err) => {
+    if (err) throw err;
+  });
+  
+  const darkThemeCssFile = writeFile(resolve(__dirname, './dist/trident-dark-theme.css'), darkThemeCss, 'css', 'dark');
+  const lightThemeCssFile = writeFile(resolve(__dirname, './dist/trident-light-theme.css'), lightThemeCss, 'css', 'light');
+  const aliasCssFile = writeFile(resolve(__dirname, './dist/trident-aliases.css'), aliasesCss, 'css', 'aliases');
+
+  const darkThemeScssFile = writeFile(resolve(__dirname, './dist/trident-dark-theme.scss'), darkThemeCss, 'scss', 'dark');
+  const lightThemeScssFile = writeFile(resolve(__dirname, './dist/trident-light-theme.scss'), darkThemeCss, 'scss', 'light');
+  const aliasScssFile = writeFile(resolve(__dirname, './dist/trident-aliases.scss'), darkThemeCss, 'scss', 'aliases');
+
+  const darkThemeTsFile = writeFile(resolve(__dirname, './dist/trident-dark-theme.ts'), darkThemeTs, 'ts', 'dark');
+  const lightThemeTsFile = writeFile(resolve(__dirname, './dist/trident-light-theme.ts'), lightThemeTs, 'ts', 'light');
+  const aliasTsFile = writeFile(resolve(__dirname, './dist/trident-aliases.ts'), aliasesTs, 'ts', 'aliases');
+
+
+module.exports = {
+  darkThemeCssFile,
+  lightThemeCssFile,
+  aliasCssFile,
+  darkThemeScssFile,
+  lightThemeScssFile,
+  aliasScssFile,
+  darkThemeTsFile,
+  lightThemeTsFile,
+  aliasTsFile
+}
+

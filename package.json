@@ -1,6 +1,6 @@
 {
   "name": "@brianbrady/fluentui-theme-files",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "",
   "main": "index.js",
   "compilerOptions": {
@@ -23,7 +23,11 @@
   "devDependencies": {
     "@fluentui/react-components": "^9.4.0",
     "eslint": "^8.25.0",
+    "fs": "^0.0.1-security",
     "ts-node": "^10.9.1",
     "typescript": "^4.8.4"
-  }
+  },
+  "files": [
+      "./dist/*"
+  ]
 }

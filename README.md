@@ -1,3 +1,10 @@
-# Fluent Design Tokens and Alias Package
+# Fluent Theme Files
 
-Contains Fluent UI theme tokens and aliases in both CSS and flat JS objects.  
+Generates exports for Fluent UI theme tokens and alias files in CSS, SCSS, and TS.  
+
+# Installation
+Using npm:
+
+```powershell
+npm i @brianbrady/fluentui-theme-files
+```

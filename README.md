@@ -5,4 +5,6 @@ Generates exports for Fluent UI theme tokens and alias files in CSS, SCSS, and T
 # Installation
 Using npm:
 
-$ npm i @brianbrady/fluentui-theme-files
+```cmd
+npm i @brianbrady/fluentui-theme-files
+```

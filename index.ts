@@ -39,6 +39,22 @@ const objToCss = (obj: any) => {
     return result
   }
 
+  const formatJson = (obj: any) => {
+    var keys = Object.keys(obj)
+    var values = Object.values(obj);
+    if (!keys.length) return ''
+    var i, len = keys.length
+    var result = ''
+  
+    for (i = 0; i < len; i++) {
+      var key = keys[i]
+      var val = obj[key]
+      result += `\n\t"${key}": "${val}",`;
+    }
+  
+    return result
+  }
+
   const darkThemeCss =  objToCss(darkTheme);
   const lightThemeCss =  objToCss(lightTheme);
   const aliasesCss =  objToCss(aliases);
@@ -46,6 +62,10 @@ const objToCss = (obj: any) => {
   const darkThemeTs = formatObj(darkTheme);
   const lightThemeTs = formatObj(lightTheme);
   const aliasesTs = formatObj(aliases);
+
+  const darkThemeJson = formatJson(darkTheme);
+  const lightThemeJson = formatJson(lightTheme);
+  const aliasesJson = formatJson(aliases);
 
 
   const writeFile = (outputPath: string, fileContent: string, fileType: string, theme: string) => {
@@ -67,6 +87,9 @@ const objToCss = (obj: any) => {
         writeFileSync(outputPath, `const fluent${theme.charAt(0).toUpperCase() + theme.slice(1)}Theme = { ${fileContent} }`, 'utf8');
       }
     }
+    else if (fileType === 'json') {
+          writeFileSync(outputPath, `{ ${fileContent} }`, 'utf8');
+      }
   }
 
   mkdir('./dist', { recursive: true }, (err) => {
@@ -85,6 +108,10 @@ const objToCss = (obj: any) => {
   const lightThemeTsFile = writeFile(resolve(__dirname, './dist/trident-light-theme.ts'), lightThemeTs, 'ts', 'light');
   const aliasTsFile = writeFile(resolve(__dirname, './dist/trident-aliases.ts'), aliasesTs, 'ts', 'aliases');
 
+  const darkThemeJsonFile = writeFile(resolve(__dirname, './dist/trident-dark-theme.json'), darkThemeJson, 'json', 'dark');
+  const lightThemeJsonFile = writeFile(resolve(__dirname, './dist/trident-light-theme.json'), lightThemeJson, 'json', 'light');
+  const aliasJsonFile = writeFile(resolve(__dirname, './dist/trident-aliases.json'), aliasesJson, 'json', 'aliases');
+
 
 module.exports = {
   darkThemeCssFile,
@@ -95,6 +122,9 @@ module.exports = {
   aliasScssFile,
   darkThemeTsFile,
   lightThemeTsFile,
-  aliasTsFile
+  aliasTsFile,
+  darkThemeJsonFile,
+  lightThemeJsonFile,
+  aliasJsonFile
 }
 

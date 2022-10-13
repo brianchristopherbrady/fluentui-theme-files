@@ -101,8 +101,8 @@ const objToCss = (obj: any) => {
   const aliasCssFile = writeFile(resolve(__dirname, './dist/trident-aliases.css'), aliasesCss, 'css', 'aliases');
 
   const darkThemeScssFile = writeFile(resolve(__dirname, './dist/trident-dark-theme.scss'), darkThemeCss, 'scss', 'dark');
-  const lightThemeScssFile = writeFile(resolve(__dirname, './dist/trident-light-theme.scss'), darkThemeCss, 'scss', 'light');
-  const aliasScssFile = writeFile(resolve(__dirname, './dist/trident-aliases.scss'), darkThemeCss, 'scss', 'aliases');
+  const lightThemeScssFile = writeFile(resolve(__dirname, './dist/trident-light-theme.scss'), lightThemeCss, 'scss', 'light');
+  const aliasScssFile = writeFile(resolve(__dirname, './dist/trident-aliases.scss'), aliasesCss, 'scss', 'aliases');
 
   const darkThemeTsFile = writeFile(resolve(__dirname, './dist/trident-dark-theme.ts'), darkThemeTs, 'ts', 'dark');
   const lightThemeTsFile = writeFile(resolve(__dirname, './dist/trident-light-theme.ts'), lightThemeTs, 'ts', 'light');

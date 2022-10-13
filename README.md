@@ -10,5 +10,10 @@ https://www.npmjs.com/package/@brianbrady/fluentui-theme-files
 Using npm:
 
 ```powershell
-npm i @brianbrady/fluentui-theme-files
+    npm i @brianbrady/fluentui-theme-files
+```
+
+Run:
+```powershell
+    ts-node-esm index.ts
 ```
